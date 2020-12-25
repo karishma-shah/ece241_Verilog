@@ -30,7 +30,7 @@ module top(SW, LEDR);
 	input [9:0] SW;
 	output [9:0] LEDR;
 
-	counter_4_bit u1 (.clock(SW[9]), .enable(SW[0]), .resetn(SW[8]), .freshdata(SW[7:5]), .load(SW[2]), .q(LEDR[3:0]));
+	counter_4_bit u1 (.clock(SW[0]), .enable(SW[1]), .resetn(SW[2]), .freshdata(SW[6:3]), .load(SW[7]), .q(LEDR[3:0]));
 
 endmodule
 
