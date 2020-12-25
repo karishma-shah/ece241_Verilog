@@ -30,18 +30,21 @@ module top(SW, LEDR);
 	input [9:0] SW;
 	output [9:0] LEDR;
 
-	counter_4_bit u1 (SW[9], SW[0], SW[8], LEDR[3:0]);
+	counter_4_bit u1 (.clock(SW[9]), .enable(SW[0]), .resetn(SW[8]), .freshdata(SW[7:5]), .load(SW[2]), .q(LEDR[3:0]));
 
 endmodule
 
-module counter_4_bit (clock, enable, resetp, q);
-    input clock, enable, resetp;
+module counter_4_bit (clock, enable, resetn, freshdata, load, q);
+    input clock, enable, resetn, load;
+    input [3:0] freshdata;
     output reg [3:0] q;
 
     always@(posedge clock)
         begin
-            if (resetp == 1) //active high, synchronous reset
+	    if (resetn == 0) //active low, synchronous reset
                 q <= 0;
+	    else if (load == 1)
+		q <= freshdata; //parallel load
             else if (enable == 1)
                 q <= q + 1; //counts up by 1 at clock edge
         end
